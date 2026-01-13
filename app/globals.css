@@ -1,26 +1,22 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Aes';
+  src: url('./fonts/Aesthetic_Beauty CF.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Aes2';
+  src: url('./fonts/aes_2.ttf') format('truetype');
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-aes: 'Aes', sans-serif;
+  --font-aes2: 'Aes2', sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  color: black;
+  font-family: var(--font-aes);
 }
