@@ -1,12 +1,29 @@
 "use client";
-import { useScroll, useMotionValueEvent } from "framer-motion";
+import { useScroll, useMotionValueEvent, motion } from "framer-motion";
 import { useRef, useState } from "react";
+import { smoothTransition } from "../app/constants";
 
 const projects = [
-  { title: "Simplified", content: "Complex tasks are now simple", color: "#407AFF" },
-  { title: "Boost Productivity", content: "Perform Tasks in less time", color: "#DD3E58" },
-  { title: "Facilitated learning", content: "train anyone from anywhere", color: "#BA71F5" },
-  { title: "Support", content: "Now its 24/7 support", color: "#F75CD0" },
+  { 
+    title: "RAG Assistant", 
+    content: "Chat with PDFs via LLM", 
+    color: "#fbbf24" 
+  },
+  { 
+    title: "Neural Vision", 
+    content: "Real-time Object Detection", 
+    color: "#fb923c" 
+  },
+  { 
+    title: "Market Predictor", 
+    content: "Time-Series Forecasting", 
+    color: "#f87171" 
+  },
+  { 
+    title: "Voice Intelligence", 
+    content: "Whisper Speech-to-Text", 
+    color: "#f472b6" 
+  },
 ];
 
 export default function StackArea() {
@@ -25,44 +42,66 @@ export default function StackArea() {
   });
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] w-full bg-transparent font-aes">
+    <div ref={containerRef} className="relative h-[400vh] w-full bg-transparent font-aes 
+    transition-colors duration-500">
       <div className="sticky top-0 flex h-screen w-full overflow-hidden">
         
         {/* ЛІВА ЧАСТИНА */}
         <div className="w-1/2 flex flex-col justify-center items-center h-full z-10">
-          {/* Зменшив від'ємний марджин для кращого балансу */}
           <div className="w-[420px] ml-[180px]"> 
-            <h2 className="text-[84px] font-bold leading-[88px] tracking-tight">
+            <h2 className="text-[84px] font-bold leading-[88px] tracking-tight 
+            text-black dark:text-white transition-colors duration-500">
               Selected Projects
             </h2>
-            <div className="text-[16px] mt-[25px] leading-[1.6] max-w-[500px] opacity-90">
-              A collection of projects where I transform complex ideas 
-              into digital reality. My focus lies in writing clean, maintainable 
-              code that deliver seamless experiences.
+            <div className="text-[16px] mt-[25px] leading-[1.6] max-w-[500px] 
+            opacity-90 text-black dark:text-white transition-colors duration-500">
+              A collection of projects where transform complex ideas...
               <br />
-              {/* Кнопка: зменшив padding по вертикалі (12px замість 16px) */}
-              <button className="mt-6 px-7 py-3 bg-black text-white rounded-full text-[14px] font-medium hover:-translate-y-1 transition-all duration-300 shadow-sm active:scale-95 font-aes">
-                See More Details
-              </button>
+              <motion.button 
+                whileHover={{ y: -5, backgroundColor: "rgba(128, 128, 128, 0.2)" }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ ...smoothTransition, delay: 0.4 }}
+                className="mt-6 px-10 py-3 border-2 border-black dark:border-white 
+                rounded-4xl text-[16px] font-bold font-aes text-black dark:text-white 
+                text-center tracking-[2px] transition-colors duration-500 cursor-pointer"
+              >
+                See More
+              </motion.button>
             </div>
           </div>
         </div>
 
         {/* ПРАВА ЧАСТИНА */}
         <div className="w-1/2 flex items-center justify-center h-full relative">
-          {/* gap між текстом і картками регулюється через ml тут */}
+          
+          {/* 👇 НОВИНКА: ФОНОВЕ СВІТІННЯ (GLOW)
+              Воно стоїть позаду карток і створює ефект глибини для скла */}
+<div 
+            className="absolute top-1/2 left-[20%] -translate-x-1/2 -translate-y-1/2 
+            w-[700px] h-[700px] rounded-full 
+            transition-colors duration-1000 ease-in-out pointer-events-none
+            opacity-50 dark:opacity-30"
+            style={{ 
+              backgroundColor: projects[activeCard].color,
+              // 👇 Ця магія робить краї невидимими:
+              // Ми кажемо браузеру: показуй центр (black), а краї роби прозорими (transparent)
+              maskImage: "radial-gradient(circle, black 0%, transparent 70%)",
+              WebkitMaskImage: "radial-gradient(circle, black 0%, transparent 70%)",
+              // Додатковий блюр для м'якості
+              filter: "blur(60px)" 
+            }}
+          />
+
           <div className="relative w-[350px] h-[350px] ml-[40px]"> 
             {projects.map((project, index) => {
               const isPast = index < activeCard;
               const isActive = index === activeCard;
-              
               const fanRotation = (index - activeCard) * 6; 
               
               let transformStyle = "";
               let opacity = 1;
 
               if (isPast) {
-                // Виліт чітко вгору
                 transformStyle = "translate(-50%, -160%) rotate(0deg)";
                 opacity = 0;
               } else if (isActive) {
@@ -76,12 +115,24 @@ export default function StackArea() {
               return (
                 <div
                   key={index}
-                  className="absolute p-[35px] text-black shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-700 ease-in-out border border-black/5"
+                  // 👇 ОНОВЛЕНИЙ СТИЛЬ КАРТКИ ДЛЯ ТЕМНОЇ ТЕМИ
+                  className="absolute p-[35px] 
+                  transition-all duration-700 ease-in-out 
+                  rounded-[30px] border 
+                  
+                  /* Light Mode: Біле скло */
+                  border-black/5 bg-white/60 shadow-xl
+                  
+                  /* Dark Mode: Темне, глибоке скло */
+                  dark:border-white/10 dark:bg-gray-800/40 
+                  dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]
+                  
+                  backdrop-blur-xl
+                  text-black dark:text-white"
+                  
                   style={{
                     width: "380px",
                     height: "380px",
-                    borderRadius: "25px", // твій оригінальний радіус
-                    backgroundColor: project.color,
                     top: "50%",
                     left: "20%",
                     transform: transformStyle,
@@ -92,21 +143,27 @@ export default function StackArea() {
                 >
                   <div className="flex flex-col h-full justify-between">
                     <div>
-                      <div className="text-[20px] font-bold mb-3">
+                      <div 
+                        className="text-[24px] font-bold mb-3 drop-shadow-sm"
+                        style={{ color: project.color }}
+                      >
                         {project.title}
                       </div>
-                      <div className="text-[44px] font-bold leading-[52px]">
+                      <div className="text-[44px] font-bold leading-[52px] text-black dark:text-white">
                         {project.content}
                       </div>
                     </div>
                     
-                    <div className="flex justify-between items-end border-t border-black/10 pt-5">
-                      <span className="font-bold text-[16px] cursor-pointer hover:opacity-60 transition-opacity">
-                        Details →
+                    <div className="flex justify-between items-end border-t border-black/10 dark:border-white/10 pt-5">
+                      <span className="font-bold text-[16px] uppercase tracking-widest opacity-80 text-black dark:text-white">
+                        View Case
                       </span>
-                      <span className="text-6xl font-bold opacity-10 select-none">
-                        0{index + 1}
-                      </span>
+                      <div className="flex items-center gap-2">
+                         <span style={{ color: project.color }} className="text-2xl">→</span>
+                         <span className="text-6xl font-bold opacity-10 select-none text-black dark:text-white">
+                            0{index + 1}
+                         </span>
+                      </div>
                     </div>
                   </div>
                 </div>

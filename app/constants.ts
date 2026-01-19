@@ -1,3 +1,5 @@
+import { Transition } from "framer-motion";
+
 export const PROJECTS = [
   {
     title: "Simplified",
@@ -24,3 +26,27 @@ export const PROJECTS = [
     link: "https://github.com/..."
   }
 ];
+
+export const smoothTransition: Transition = {
+  duration: 0.5,
+  ease: [0.25, 0.1, 0.25, 1],
+};
+
+export const NewTransition: Transition = {
+  duration: 0.5,
+  ease: [0.0025, 0.001, 0.0025, 0.1],
+};
+
+export const sectionAnimation = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: smoothTransition,
+};
+
+export const NewAnimation = {
+  initial : {opacity: 0, y: 10},
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: NewTransition,
+}

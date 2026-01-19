@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 👇 ЦЕЙ РЯДОК ОБОВ'ЯЗКОВИЙ ДЛЯ ТЕМНОЇ ТЕМИ В v4 */
+@variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: 'Aes';
   src: url('./fonts/Aesthetic_Beauty CF.otf') format('opentype');
@@ -16,7 +19,7 @@
 }
 
 body {
-  background-color: white;
-  color: black;
   font-family: var(--font-aes);
+  /* Додаємо плавний перехід кольорів */
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
