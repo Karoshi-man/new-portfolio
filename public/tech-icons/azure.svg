@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="glassSweep" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0089D6" />
+            <stop offset="45%" stop-color="#0089D6" />
+            <stop offset="50%" stop-color="#50E6FF" /> <stop offset="55%" stop-color="#0089D6" />
+            <stop offset="100%" stop-color="#0089D6" />
+            
+            <animate attributeName="x1" values="-150%; 150%" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="x2" values="-50%; 250%" dur="3s" repeatCount="indefinite" />
+        </linearGradient>
+    </defs>
+
+    <g>
+        <animateTransform attributeName="transform" type="scale" values="1; 1.03; 1" dur="4s" repeatCount="indefinite" additive="sum" pivot="8 8" />
+
+        <path fill="url(#glassSweep)" d="M.9 11.788c0-.003.811-1.412 1.803-3.131L4.507 5.53l2.102-1.764C7.765 2.797 8.714 2 8.717 2a.37.37 0 01-.033.085L6.4 6.981 4.16 11.789l-1.63.002c-.897.001-1.63 0-1.63-.003z">
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0.2,0.1; 0,0" dur="4s" repeatCount="indefinite" />
+        </path>
+
+        <path fill="url(#glassSweep)" d="M7.47 12.412l3.348-.592.031-.007-1.722-2.049a291.474 291.474 0 01-1.723-2.058c0-.01 1.779-4.909 1.789-4.926a788.95 788.95 0 012.934 5.066l2.95 5.115.023.039-10.948-.001 3.317-.587z">
+            <animateTransform attributeName="transform" type="translate" values="0,0; -0.2,-0.1; 0,0" dur="4s" repeatCount="indefinite" />
+        </path>
+    </g>
+</svg>
