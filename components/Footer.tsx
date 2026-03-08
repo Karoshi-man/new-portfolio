@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="w-full h-[60vh] flex flex-col items-center justify-center relative z-20 font-aes">
+    <footer className="w-full min-h-screen flex flex-col items-center justify-center relative z-20 font-aes">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -23,12 +23,12 @@ export default function Footer() {
         >
           mfesenko2003@gmail.com
         </a>
-
-        {/* Копірайт (майже непомітний) */}
-        <div className="absolute bottom-10 text-xs md:text-sm text-black/30 dark:text-white/30 uppercase tracking-[0.2em]">
-          © {new Date().getFullYear()} Martin Fesenko
-        </div>
       </motion.div>
+
+      {/* Копірайт (винесений в самий низ футера) */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full text-center text-xs md:text-sm text-black/30 dark:text-white/30 uppercase tracking-[0.2em]">
+        © {new Date().getFullYear()} Martin Fesenko
+      </div>
     </footer>
   );
 }

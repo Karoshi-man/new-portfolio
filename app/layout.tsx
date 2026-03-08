@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Providers } from "./providers";
 import './globals.css';
+import SmoothScrollProvider from "../components/SmoothScrollProvider";
 
 const aesFont = localFont({
   src: "./fonts/Aesthetic_Beauty CF.otf",
@@ -20,9 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // 1. suppressHydrationWarning прибирає помилку при завантаженні теми
     <html lang="uk" suppressHydrationWarning>
-      <body 
+      <body
         className={`
           ${aesFont.variable} 
           font-aes 
@@ -35,9 +35,11 @@ export default function RootLayout({
           dark:bg-black dark:text-white
         `}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <SmoothScrollProvider> 
+          <Providers>
+            {children}
+          </Providers>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

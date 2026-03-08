@@ -1,63 +1,104 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useSectionTracker } from "./ScrollWrappers";
 
 const sections = [
-  { id: "hero", label: "Hi!" },
+  { id: "hero", label: "Hero" },
   { id: "projects", label: "Projects" },
-  { id: "stack", label: "My Stack" },
+  { id: "stack", label: "Tech Stack" },
   { id: "languages", label: "Languages" },
-  { id: "life", label: "Life" },
-  { id: "connections", label: "Connect" },
+  { id: "life", label: "Life & Hobbies" },
+  { id: "connections", label: "Connections" }
 ];
 
 export default function SectionIndicator() {
-  const { activeId } = useSectionTracker();
+  const [activeSection, setActiveSection] = useState("hero");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-50% 0px -50% 0px",
+        threshold: 0
+      }
+    );
+
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = id === "hero" ? 0 : window.innerHeight * 0.7; 
+      const targetY = el.getBoundingClientRect().top + window.scrollY + offset;
+      
+      window.scrollTo({
+        top: targetY,
+        behavior: "smooth"
+      });
     }
   };
 
   return (
-    <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4 hidden md:flex">
-      {sections.map((section) => {
-        const isActive = activeId === section.id;
+    // 👇 ДОДАНО: mix-blend-difference та text-white. 
+    // Це зробить індикатор білим на чорному і чорним на білому АВТОМАТИЧНО!
+    <div className="fixed left-4 md:left-8 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3 font-aes mix-blend-difference text-white">
+      {sections.map((s, index) => {
+        const isActive = activeSection === s.id;
+        const number = `0${index + 1}`;
 
         return (
           <button
-            key={section.id}
-            onClick={() => scrollToSection(section.id)}
-            className="group flex items-center gap-3 outline-none"
+            key={s.id}
+            onClick={() => scrollToSection(s.id)}
+            className="relative group flex items-center h-8 outline-none cursor-pointer"
           >
-            {/* Лінія / Індикатор */}
-            <div className="relative flex items-center justify-center w-4 h-4">
-              <motion.div
-                animate={{
-                  height: isActive ? 24 : 4,
-                  width: isActive ? 2 : 2,
-                  backgroundColor: isActive ? "#888" : "#ccc",
-                }}
-                className="rounded-full bg-black dark:bg-white transition-colors duration-500"
+            {/* МІНІМАЛІСТИЧНИЙ КОНТЕЙНЕР ДЛЯ ЛІНІЇ/КРАПКИ */}
+            <div className="relative flex items-center justify-center w-4 h-full">
+              {/* Мікро-крапка (Неактивна) */}
+              <div 
+                className={`w-1 h-1 rounded-full bg-white transition-all duration-300 ${
+                  isActive 
+                    ? "opacity-0" 
+                    : "opacity-30 group-hover:opacity-100 group-hover:scale-150"
+                }`} 
               />
+
+              {/* Магнітний ліфт (Активна лінія - ультратонка) */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeSectionIndicator"
+                  className="absolute w-[2px] h-8 bg-white rounded-full"
+                  initial={false}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                />
+              )}
             </div>
 
-            {/* Текстовий лейбл (з'являється при ховері або якщо активний) */}
-            <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ 
-                opacity: isActive || false ? 1 : 0, 
-                x: isActive || false ? 0 : -10,
-                color: isActive ? "currentColor" : "#888"
-              }}
-              className="text-xs font-aes font-bold tracking-widest 
-              uppercase text-black dark:text-white opacity-0 group-hover:opacity-100 
-              transition-opacity duration-300 whitespace-nowrap absolute left-6"
+            {/* ПІДКАЗКА (Тільки при наведенні, ніякого фону) */}
+            <div 
+              className="absolute left-6 flex items-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none"
             >
-              {section.label}
-            </motion.span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase whitespace-nowrap">
+                <span className="opacity-50 mr-2">{number}</span>
+                {s.label}
+              </span>
+            </div>
           </button>
         );
       })}
