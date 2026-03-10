@@ -38,7 +38,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 40, filter: "blur(5px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={smoothTransition}
-              className="text-[12vw] md:text-[99px] font-bold leading-tight tracking-[5px] text-black dark:text-white"
+              className="text-[12vw] md:text-[99px] font-bold leading-tight tracking-[5px] text-black dark:text-white whitespace-nowrap"
             >
               Martin Fesenko &lt;/&gt;
             </motion.h1>
